@@ -3,13 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_ENV=development node ssr-server.js",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "deploy-staging": "NODE_ENV=staging next build && NODE_ENV=staging node ssr-server.js",
+    "deploy-production": "NODE_ENV=production next build && NODE_ENV=production node ssr-server.js",
+    "deploy-eb": "eb deploy welder-edu-prod",
+    "deploy": "bash ./deploy.sh"
   },
   "dependencies": {
+    "express": "^4.17.1",
     "next": "^9.1.6",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "serverless-next.js": "^1.7.2"
   }
 }
