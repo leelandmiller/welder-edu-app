@@ -11,16 +11,6 @@ deploy:
     secret_access_key: ${AWS_SECRET_ACCESS_KEY}
     region: "us-west-2"       
     app: "welder-edu-app"                     
-    env: "welder-edu-app-staging"                     
-    bucket_name: ${AWS_S3_BUCKET} 
-    on:
-      branch: "staging"
-
-  - provider: elasticbeanstalk
-    access_key_id: ${AWS_ACCESS_KEY_ID}
-    secret_access_key: ${AWS_SECRET_ACCESS_KEY}
-    region: "us-west-2"       
-    app: "welder-edu-app"                     
     env: "welder-edu-app-production"                     
     bucket_name: ${AWS_S3_BUCKET} 
     on:
