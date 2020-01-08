@@ -3,7 +3,10 @@ import App from 'next/app';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import theme from '../src/theme';
+import { lightTheme } from '../src/theme';
+import Navbar from '../src/components/Navbar';
+
+import '../src/stylesheets/main.scss';
 
 export default class MyApp extends App {
   componentDidMount() {
@@ -22,10 +25,13 @@ export default class MyApp extends App {
         <Head>
           <title>My page</title>
         </Head>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={lightTheme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
-          <Component {...pageProps} />
+          <Navbar />
+          <div className="main-wrapper">
+            <Component {...pageProps} />
+          </div>
         </ThemeProvider>
       </React.Fragment>
     );

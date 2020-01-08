@@ -1,0 +1,20 @@
+.navbar {
+  &-header {
+    flex-grow: 1;
+
+    @media (max-width: $small-break) {
+      text-align: center;
+    }
+  }
+
+  &--auth {
+    display: flex;
+    &-login {
+      margin-right: 8px !important;
+    }
+
+    @media (max-width: $small-break) {
+      display: none;
+    }
+  }
+}

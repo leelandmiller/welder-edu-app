@@ -2,7 +2,6 @@ import Container from "@material-ui/core/Container"
 
 const layoutStyle = {
   marginTop: '64px',
-  border: '1px solid #DDD'
 }
 
 export const withLayout = (Page) => {

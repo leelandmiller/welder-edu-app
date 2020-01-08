@@ -1,11 +1,10 @@
 import Link from "next/link";
+import Container from '@material-ui/core/Container';
 
 const Index = () => (
-  <div className="index">
-    <Link href="/register">
-      <a>Register</a>
-    </Link>
-  </div>
+  <Container className="index">
+    Index
+  </Container>
 )
 
 export default Index
