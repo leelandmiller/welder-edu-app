@@ -7,7 +7,7 @@ const Index = () => (
       <title>Online Welding Courses - Anywhere, Anytime | Welder Education & Training</title>
     </Head>
     <Container className="index">
-      Index
+      WEBSITE COMING SOON
     </Container>
   </>
 )
