@@ -16,6 +16,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
+import AuthDialog from './AuthDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,6 +37,8 @@ function Navbar() {
   const classes = useStyles()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [desktop, setDesktop] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [authDialogOpen, setAuthDialogOpen] = useState(false)
   // const [mq, setMq] = useState(null)
   
   // const resizeListener = mq => event => {
@@ -58,6 +61,14 @@ function Navbar() {
     }
     
     setDrawerOpen(isOpen)
+  }
+
+  const handleAuthDialogOpen = () => {
+    setAuthDialogOpen(true)
+  }
+
+  const handleAuthDialogClose = () => {
+    setAuthDialogOpen(false)
   }
 
   const sideList = side => (
@@ -103,19 +114,25 @@ function Navbar() {
           <Typography variant="h6" className="navbar-header">
             Welder Education & Training
           </Typography>
-          <Box display={{ xs: 'none', sm: 'flex' }}>
-            <Button className={classes.loginButton} variant="outlined" color="inherit">
-              Login
-            </Button>
-            <Button variant="contained" color="primary">
-              Sign Up
-            </Button>
-          </Box>
+          {
+            !isAuthenticated &&
+            <Box display={{ xs: 'none', sm: 'flex' }}>
+              <Button className={classes.loginButton} variant="outlined" color="inherit">
+                Login
+              </Button>
+              <Button onClick={handleAuthDialogOpen} variant="contained" color="primary">
+                Sign Up
+              </Button>
+            </Box>
+          }
         </Toolbar>
       </AppBar>
       <Drawer open={drawerOpen} onClose={toggleDrawer(false)}>
         {sideList('left')}
       </Drawer>
+      <AuthDialog open={authDialogOpen}
+        authType={''} handleClose={handleAuthDialogClose}
+      />
     </>
   )
 }

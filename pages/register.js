@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
-import Layout from '../components/Layout'
+import Layout from '../src/components/Layout'
 
 const boxStyle = {
   padding: '24px 0px'
