@@ -1,5 +1,5 @@
-import { useState, useLayoutEffect } from 'react';
-
+import { useState } from 'react';
+import Link from 'next/link';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -11,16 +11,32 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import Typography from '@material-ui/core/Typography';
+// import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
 import AuthDialog from './AuthDialog';
+import { useMediaQuery, useTheme } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    justifyContent: 'space-between'
+  },
+  rootSmall: {
+    justifyContent: 'unset'
+  },
+  logo: {
+    width: '64px'
+  },
+  logoSmall: {
+    width: '56px',
+    transform: 'translate(-50%, 0%)',
+    '-moz-transform': 'translate(-50%, 0%)',
+    left: '50%',
+    top: '0',
+    position: 'absolute'
   },
   list: {
     width: 250
@@ -36,24 +52,12 @@ const useStyles = makeStyles(theme => ({
 function Navbar() {
   const classes = useStyles()
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [desktop, setDesktop] = useState(true)
+  // const [desktop, setDesktop] = useState(true)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [authDialogOpen, setAuthDialogOpen] = useState(false)
-  // const [mq, setMq] = useState(null)
-  
-  // const resizeListener = mq => event => {
-  //   setDesktop(mq.matches)
-  // }
-
-
-  // useLayoutEffect(() => {
-  //   console.log('called effect');
-  //   const mq = window.matchMedia('(min-width: 600px)')
-  //   setDesktop(mq.matches)
-  //   window.addEventListener('resize', resizeListener(mq))
-
-  //   return () => window.removeEventListener('resize', resizeListener(mq))
-  // })
+  const [signUpDialogOpen, setSignUpDialogOpen] = useState(false)
+  const [loginDialogOpen, setLoginDialogOpen] = useState(false)
+  const theme = useTheme()
+  const smallScreen = useMediaQuery(theme.breakpoints.down('xs'))
 
   const toggleDrawer = isOpen => event => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -63,21 +67,49 @@ function Navbar() {
     setDrawerOpen(isOpen)
   }
 
-  const handleAuthDialogOpen = () => {
-    setAuthDialogOpen(true)
+  const handleSignUpDialogOpen = () => {
+    setSignUpDialogOpen(true)
   }
 
-  const handleAuthDialogClose = () => {
-    setAuthDialogOpen(false)
+  const handleSignUpDialogClose = () => {
+    setSignUpDialogOpen(false)
   }
 
-  const sideList = side => (
+  const handleLoginDialogOpen = () => {
+    setLoginDialogOpen(true)
+  }
+
+  const handleLoginDialogClose = () => {
+    setLoginDialogOpen(false)
+  }
+
+  const sideList = () => (
     <div
       className={classes.list}
       role="presentation"
-      onClick={toggleDrawer(side, false)}
-      onKeyDown={toggleDrawer(side, false)}
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
     >
+      {
+        !isAuthenticated &&
+        <div className="drawer-auth-links">
+          <span className="drawer-auth-btn" onClick={(e) => {
+            toggleDrawer(false)(e)
+            handleLoginDialogOpen()
+          }}>
+            LOGIN
+          </span>
+          &nbsp;
+          /
+          &nbsp;
+          <span className="drawer-auth-btn" onClick={(e) => {
+            toggleDrawer(false)(e)
+            handleSignUpDialogOpen()
+          }}>
+            SIGN UP
+          </span>
+        </div>
+      }
       <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
           <ListItem button key={text}>
@@ -101,7 +133,9 @@ function Navbar() {
   return (
     <>
       <AppBar color="inherit" position="static">
-        <Toolbar>
+        <Toolbar classes={{
+          root: smallScreen ? classes.rootSmall : classes.root
+        }}>
           <Box display={{ xs: 'block', sm: 'none' }}>
             <IconButton edge="start"
               onClick={toggleDrawer(true)}
@@ -111,16 +145,19 @@ function Navbar() {
               <MenuIcon />
             </IconButton>
           </Box>
-          <Typography variant="h6" className="navbar-header">
-            Welder Education & Training
-          </Typography>
+          <Link href="/">
+            <a>
+              <img className={smallScreen ? classes.logoSmall : classes.logo} src="/logo.png" />
+            </a>
+          </Link>
           {
             !isAuthenticated &&
             <Box display={{ xs: 'none', sm: 'flex' }}>
-              <Button className={classes.loginButton} variant="outlined" color="inherit">
+              <Button className={classes.loginButton} onClick={handleLoginDialogOpen}
+                variant="outlined" color="inherit">
                 Login
               </Button>
-              <Button onClick={handleAuthDialogOpen} variant="contained" color="primary">
+              <Button onClick={handleSignUpDialogOpen} variant="contained" color="primary">
                 Sign Up
               </Button>
             </Box>
@@ -128,10 +165,13 @@ function Navbar() {
         </Toolbar>
       </AppBar>
       <Drawer open={drawerOpen} onClose={toggleDrawer(false)}>
-        {sideList('left')}
+        {sideList()}
       </Drawer>
-      <AuthDialog open={authDialogOpen}
-        authType={''} handleClose={handleAuthDialogClose}
+      <AuthDialog open={signUpDialogOpen}
+        authType={'signup'} handleClose={handleSignUpDialogClose}
+      />
+      <AuthDialog open={loginDialogOpen}
+        authType={'login'} handleClose={handleLoginDialogClose}
       />
     </>
   )

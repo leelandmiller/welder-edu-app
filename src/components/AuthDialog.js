@@ -1,23 +1,25 @@
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
+// import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 // import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Typography from '@material-ui/core/Typography';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 // import MuiDialogContent from '@material-ui/core/DialogContent';
 // import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import Button from '@material-ui/core/Button';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const styles = theme => ({
+const titleStyles = theme => ({
   root: {
     margin: 0,
     padding: theme.spacing(2),
@@ -31,7 +33,36 @@ const styles = theme => ({
   },
 });
 
-const DialogTitle = withStyles(styles)(props => {
+const dialogStyles = theme => ({
+  paper: {
+    width: '380px'
+  },
+  paperSmall: {
+    width: '100%',
+    height: '480px',
+    alignSelf: 'flex-start'
+  },
+  contentRoot: {
+    paddingTop: '24px'
+  },
+  fbButtonRoot: {
+    width: '100%',
+    textTransform: 'none',
+    color: 'white',
+    backgroundColor: '#1778f2',
+    '&:hover': {
+      backgroundColor: '#1778f2'
+    }
+  },
+  fbButtonIc: {
+    width: '24px'
+  },
+  fbButtonText: {
+    marginLeft: '8px'
+  }
+})
+
+const DialogTitle = withStyles(titleStyles)(props => {
   const { children, classes, onClose, ...other } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
@@ -45,12 +76,49 @@ const DialogTitle = withStyles(styles)(props => {
   );
 });
 
-function AuthDialog(props) {
-  const { authType, handleClose, open } = props
+const AuthDialog = withStyles(dialogStyles)(props => {
+  const { classes, handleClose, open, type } = props;
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
+
+  const SignUpDialogContent = () => (
+    <>
+      <DialogTitle id="alert-dialog-slide-title" onClose={handleClose}>
+        Sign Up & Start Learning!
+          </DialogTitle>
+      <DialogContent classes={{ root: classes.contentRoot }}>
+        <DialogContentText id="alert-dialog-slide-description">
+          <Button classes={{ root: classes.fbButtonRoot }}>
+            <img className={classes.fbButtonIc} src="/f_logo_RGB-White_250.png" />
+            <span className={classes.fbButtonText}>Continue with Facebook</span>
+          </Button>
+        </DialogContentText>
+      </DialogContent>
+    </>
+  )
+
+  const LoginDialogContent = () => (
+    <>
+      <DialogTitle id="alert-dialog-slide-title" onClose={handleClose}>
+        Log In to your Account!
+          </DialogTitle>
+      <DialogContent classes={{ root: classes.contentRoot }}>
+        <DialogContentText id="alert-dialog-slide-description">
+          <Button classes={{ root: classes.fbButtonRoot }}>
+            <img className={classes.fbButtonIc} src="/f_logo_RGB-White_250.png" />
+            <span className={classes.fbButtonText}>Continue with Facebook</span>
+          </Button>
+        </DialogContentText>
+      </DialogContent>
+    </>
+  )
 
   return (
     <div>
-      <Dialog
+      <Dialog fullScreen={fullScreen}
+        classes={{
+          paper: fullScreen ? classes.paperSmall : classes.paper
+        }}
         open={open}
         TransitionComponent={Transition}
         keepMounted maxWidth="xs"
@@ -58,18 +126,14 @@ function AuthDialog(props) {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-slide-title" onClose={handleClose}>
-          Sign Up & Start Learning!
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            Let Google help apps determine location. This means sending anonymous location data to
-            Google, even when no apps are running.
-          </DialogContentText>
-        </DialogContent>
+        {
+          type === 'signup' ?
+            <SignUpDialogContent/> :
+            <LoginDialogContent/>
+        }
       </Dialog>
     </div>
   )
-}
+});
 
 export default AuthDialog
