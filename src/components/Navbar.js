@@ -1,31 +1,39 @@
 import { useState } from 'react';
 import Link from 'next/link';
+
 import { makeStyles } from '@material-ui/core/styles';
+import { useMediaQuery, useTheme } from '@material-ui/core';
+
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-// import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container'
+// import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import Box from '@material-ui/core/Box';
+import Toolbar from '@material-ui/core/Toolbar';
+// import List from '@material-ui/core/List';
+// import ListItem from '@material-ui/core/ListItem';
+// import ListItemText from '@material-ui/core/ListItemText';
+// import ListItemIcon from '@material-ui/core/ListItemIcon';
+// import InboxIcon from '@material-ui/icons/MoveToInbox';
+// import MailIcon from '@material-ui/icons/Mail';
+// import Typography from '@material-ui/core/Typography';
+
 import AuthDialog from './AuthDialog';
-import { useMediaQuery, useTheme } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    display: 'flex',
+    alignItems: 'center'
   },
   rootSmall: {
-    justifyContent: 'unset'
+    justifyContent: 'unset',
+    display: 'flex',
+    alignItems: 'center'
   },
   logo: {
     width: '64px'
@@ -46,7 +54,7 @@ const useStyles = makeStyles(theme => ({
   },
   loginButton: {
     marginRight: theme.spacing(1)
-  }
+  },
 }));
 
 function Navbar() {
@@ -110,7 +118,7 @@ function Navbar() {
           </span>
         </div>
       }
-      <List>
+      {/* <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
@@ -126,42 +134,42 @@ function Navbar() {
             <ListItemText primary={text} />
           </ListItem>
         ))}
-      </List>
+      </List> */}
     </div>
   );
 
   return (
     <>
       <AppBar color="inherit" position="static">
-        <Toolbar classes={{
-          root: smallScreen ? classes.rootSmall : classes.root
-        }}>
-          <Box display={{ xs: 'block', sm: 'none' }}>
-            <IconButton edge="start"
-              onClick={toggleDrawer(true)}
-              className={classes.menuButton}
-              color="inherit" aria-label="menu"
-            >
-              <MenuIcon />
-            </IconButton>
-          </Box>
-          <Link href="/">
-            <a>
-              <img className={smallScreen ? classes.logoSmall : classes.logo} src="/logo.png" />
-            </a>
-          </Link>
-          {
-            !isAuthenticated &&
-            <Box display={{ xs: 'none', sm: 'flex' }}>
-              <Button className={classes.loginButton} onClick={handleLoginDialogOpen}
-                variant="outlined" color="inherit">
-                Login
-              </Button>
-              <Button onClick={handleSignUpDialogOpen} variant="contained" color="primary">
-                Sign Up
-              </Button>
+        <Toolbar>
+          <Container classes={{ root: smallScreen ? classes.rootSmall : classes.root }}>
+            <Box display={{ xs: 'block', sm: 'none' }}>
+              <IconButton edge="start"
+                onClick={toggleDrawer(true)}
+                className={classes.menuButton}
+                color="inherit" aria-label="menu"
+              >
+                <MenuIcon />
+              </IconButton>
             </Box>
-          }
+            <Link href="/">
+              <a>
+                <img className={smallScreen ? classes.logoSmall : classes.logo} src="/logo.png" />
+              </a>
+            </Link>
+            {
+              !isAuthenticated &&
+              <Box display={{ xs: 'none', sm: 'flex' }}>
+                <Button className={classes.loginButton} onClick={handleLoginDialogOpen}
+                  variant="outlined" color="inherit">
+                  Login
+                </Button>
+                <Button onClick={handleSignUpDialogOpen} variant="contained" color="primary">
+                  Sign Up
+                </Button>
+              </Box>
+            }
+          </Container>
         </Toolbar>
       </AppBar>
       <Drawer open={drawerOpen} onClose={toggleDrawer(false)}>

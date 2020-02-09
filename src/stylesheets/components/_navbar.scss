@@ -28,6 +28,11 @@
     padding: 8px 16px;
   }
 
+  &-auth-btn {
+    padding: 8px;
+    margin: -8px;
+  }
+
   &-auth-btn:hover {
     cursor: pointer;
     text-decoration: underline;
