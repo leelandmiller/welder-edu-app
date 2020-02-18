@@ -77,7 +77,7 @@ const DialogTitle = withStyles(titleStyles)(props => {
 });
 
 const AuthDialog = withStyles(dialogStyles)(props => {
-  const { classes, handleClose, open, type } = props;
+  const { classes, handleClose, open, authType } = props;
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
@@ -127,7 +127,7 @@ const AuthDialog = withStyles(dialogStyles)(props => {
         aria-describedby="alert-dialog-slide-description"
       >
         {
-          type === 'signup' ?
+          authType === 'signup' ?
             <SignUpDialogContent/> :
             <LoginDialogContent/>
         }
